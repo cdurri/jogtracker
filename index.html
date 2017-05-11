@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Portfolio</title>
+
+
+  <link rel="stylesheet" href="../css/font-awesome.min.css">
+
+  <!-- Bootstrap -->
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/data-dash.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-resource.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js"></script>
+
+  <script type="text/javascript" src="js/data-dash.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script src="js/conic-gradient.js"></script>
+
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+  <div ng-app="dataDashApp">
+    <div ng-controller="dataDashController">
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            JogTracker
+          </div>
+
+        </div>
+      </nav>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Jogs By Month</h3>
+              </div>
+              <div class="panel-body">
+                <ul class="by-month">
+                  <li ng-repeat="data in monthsJogged" ng-if="data.count > 0">{{data.month}} - {{data.count}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-10">
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Last 10 Jogs - <span class="key distance"></span>Distance & <span class="key time"></span>Time</h3>
+                  </div>
+                  <div class="panel-body">
+                    <table class="bar-chart">
+                      <tr ng-repeat="run in data | limitTo:-10">
+                        <td class="legend" ng-style="{left:$index * 10 +'%'}">{{run.date | date}} </td>
+                        <td ng-style="{ left:$index * 10 +'%', height: (run.time / maxTime) * 300 + 'px'}" class="time" ng-class="{highlight: run.time === maxTime}" ><span>
+
+                          {{run.time | number}} Minutes</span></td>
+                          <td ng-style="{ left:$index * 10 +'%', height: (run.distance / maxDistance) * 300 + 'px'}" class="distance" ng-class="{highlight: run.distance === maxDistance}"
+                          >  <span>
+
+                            {{run.distance}} Miles
+                          </span></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Pace</h3>
+                    </div>
+                    <div class="panel-body line-chart">
+                      <div class="line-legend-min">
+                        {{minPace | number:2}}
+                      </div>
+                      <div class="line-legend-max">
+                        {{maxPace | number:2}}
+                      </div>
+
+                      <svg>
+                        <line ng-repeat="run in data" x1="{{($index - 1) / data.length * 100}}%"  x2="{{$index / data.length * 100}}%" y1="{{data[$index - 1].relPace * 200}}" y2="{{run.relPace * 200}}">
+
+                        </line>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Total Jogs ({{total}}) -  Split by Days</h3>
+                    </div>
+                    <div class="panel-body">
+                      <div class="pie" style="background:
+                      conic-gradient(
+                      yellowgreen {{monday / total * 100}}%,
+                      gold 0 {{(monday + tuesday) / total * 100}}%,
+                      silver 0 {{(monday + tuesday + wednesday) / total * 100}}%,
+                      lightblue 0 {{(monday + tuesday + wednesday + thursday) / total * 100}}%,
+                      orange 0 {{(monday + tuesday + wednesday + thursday + friday) / total * 100}}%,
+                      tomato 0 {{(monday + tuesday + wednesday + thursday + friday + saturday) / total * 100}}%,
+                      navy 0 {{(monday + tuesday + wednesday + thursday + friday + saturday + sunday) / total * 100}}%
+
+                      );"></div>
+                      <table class="pie-table">
+                        <tr>
+                          <td style="background:yellowgreen; color:white;">Monday</td>
+                          <td>{{monday}}</td>
+                        </tr>
+                        <tr>
+                          <td style="background:gold; color:white;">Tuesday</td>
+                          <td>{{tuesday}}</td>
+                        </tr>
+                        <tr>
+                          <td style="background:silver; color:white;">Wednesday</td>
+                          <td>{{wednesday}}</td>
+                        </tr>
+                        <tr>
+                          <td style="background:lightblue; color:white;">Thursday</td>
+                          <td>{{thursday}}</td>
+                        </tr>
+                        <tr>
+                          <td style="background:orange; color:white;">Friday</td>
+                          <td>{{friday}}</td>
+                        </tr>
+                        <tr>
+                          <td style="background:tomato; color:white;">Saturday</td>
+                          <td>{{saturday}}</td>
+                        </tr>
+                        <tr>
+                          <td style="background:navy; color:white;">Sunday</td>
+                          <td>{{sunday}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+  <script src="https://use.fontawesome.com/5aa296494d.js"></script>
+
+  <script src="../js/less.js" type="text/javascript"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="../js/jquery-3.1.1.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="../js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

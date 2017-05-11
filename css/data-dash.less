@@ -1,0 +1,193 @@
+@lightblue: #B9D7D9;
+@lightbluecomp: spin(@lightblue, 180);
+@midblue: #668284;
+@midbluecomp: spin(@midblue, 180);
+@orange: #CC5D4C;
+@turqoise: #05676E;
+
+
+ul {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+
+  li {
+    text-transform: capitalize;
+  }
+}
+
+.navbar {
+  border-radius:0;
+  background:@turqoise;
+  color:white;
+  font-weight:bold;
+  font-size:2.3em;
+  border:none;
+  padding:10px;
+}
+
+// Sidebar
+
+.by-month {
+  font-size:1.3em;
+  color:@midblue;
+
+  li {
+    margin: 10px 0;
+  }
+}
+
+// Bar Chart
+.bar-chart {
+  display:block;
+  height:300px;
+  width:98%;
+  position:relative;
+  border-left:1px solid @midblue;
+  border-bottom:1px solid @midblue;
+  margin-left:2%;
+  margin-bottom:50px;
+
+  td {
+    position:absolute;
+    width:20px;
+    bottom:0;
+    margin-left:10px;
+    display:block;
+
+    span {
+      position:absolute;
+      left:25px;
+      bottom:0;
+      padding:5px;
+      color:white;
+      transform:rotate(-90deg);
+      transform-origin:bottom left;
+      width:300px;
+    }
+
+  }
+
+  .legend {
+    bottom:-40px;
+    font-size:0.8em;
+    width:50px;
+  }
+
+ /* .pace {
+    height:30px;
+    overflow:hidden;
+    display:none;
+    span {
+      transform:rotate(0deg);
+      background:@turqoise;
+      width:100px;
+      border-radius:5px;
+      left:45px;
+      z-index:0;
+
+    }
+  }*/
+
+  .distance {
+    background:@lightblue;
+
+    &.highlight {
+      background: @lightbluecomp;
+    }
+  }
+
+  .time {
+    background:@midblue;
+    margin-left:30px;
+
+    &.highlight {
+      background: @midbluecomp;
+    }
+  }
+
+
+
+}
+
+.key {
+  display:inline-block;
+  width:15px;
+  height:15px;
+  margin-right:5px;
+
+  &.distance {
+    background:@lightblue;
+  }
+
+  &.time {
+    background:@midblue;
+  }
+}
+// Line Chart
+
+.line-chart {
+
+  position:relative;
+
+  &:before {
+    content:"Minutes per Mile";
+    display:block;
+    position:absolute;
+    bottom:20px;
+    left:30px;
+    width:200px;
+    transform:rotate(-90deg);
+    transform-origin: bottom left;
+    text-align:center;
+  }
+
+  .line-legend-max {
+    position:absolute;
+    bottom:20px;
+    font-size:0.7em;
+    left:1%;
+  }
+  .line-legend-min {
+    position:absolute;
+    top:15px;
+    font-size:0.7em;
+    left:1%;
+  }
+}
+
+svg {
+  margin-left:4%;
+  height:200px;
+  width:96%;
+  border-left:1px solid @midblue;
+  border-bottom:1px solid @midblue;
+
+  line {
+    stroke:@turqoise;
+    stroke-width:3px;
+  }
+}
+
+// Pie Chart
+
+.pie {
+  margin:0;
+  border-radius: 50%;
+  width:200px;
+  height:200px;
+  float:left;
+}
+
+table.pie-table {
+  text-align:center;
+  margin:0 3% 0 10px;
+  width:120px;
+  height:60px;
+  float:right;
+
+  td {
+    padding:4px;
+    background:#eee;
+  }
+}
